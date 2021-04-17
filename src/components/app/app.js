@@ -7,8 +7,13 @@ import ItemStatusFilter from '../item-status-filter';
 import ItemAddForm from '../item-add-form';
 import './app.css';
 
+/* Сделаем компонент, который показывает сколько дел мы уже сделали, а сколько нет
+Нужно done и important поднять на уровень App. И тогда если App будет знать состояния 
+done каждого елемента он сможет обновлять наш AppHeader каждый раз, когда состояния 
+одного из елементов изменяеться */
+
 export default class App extends Component {
-    // id нам нужно згенерить самостоятельно
+
     maxId = 100;
 
     state = {
@@ -34,18 +39,14 @@ export default class App extends Component {
     };
 
     addItem = (text) => {
-        // generate id?
         const newItem = {
             label: text,
             important: false,
-            id: this.maxId++		// может показаться, что мы меняем состояния класса
-                                    // на самом деле maxId - это не состояние класса, он не находиться
-                                    // в обьекте state
+            id: this.maxId++		
         };
 
-        // Мы не можем изменять массив и изменять предыдущее состояние
         this.setState(({todoData}) => {
-            // Новый масиив будет состоять из всех ел. старого массива + новый елемент
+            
             const newArr = [
                 ...todoData,
                 newItem
@@ -56,6 +57,15 @@ export default class App extends Component {
             };
         });
     };
+
+    onToggleImportant = (id) => {		    // этой ф. нужно знать id, который изменил свой статус
+        console.log('Toggle Important', id);
+      };
+    
+      onToggleDone = (id) => {		        // этой ф. нужно знать id, который изменил свой статус
+        console.log('Toggle Done', id);
+      };	                                // И если мы увидим эти надписи в консоли, это будет означать
+                                            // что App получает свои события
 
     render() {
         return (
@@ -68,8 +78,10 @@ export default class App extends Component {
 
                 <TodoList 
                     todos={this.state.todoData}
-                    onDeleted={ this.deleteItem }/>
-
+                    onDeleted={ this.deleteItem }
+                    onToggleImportant={ this.onToggleImportant }
+                    onToggleDone={ this.onToggleDone }
+                />
                 <ItemAddForm onItemAdded={this.addItem}/>
             </div>
         );
