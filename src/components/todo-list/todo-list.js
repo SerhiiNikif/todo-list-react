@@ -5,8 +5,7 @@ import './todo-list.css';
 
 const TodoList = ({ todos, onDeleted,
                     onToggleImportant,
-                    onToggleDone }) => {	// получили из props
-                                          // Теперь нужно вызвать эти 2 ф. с правыльными id
+                    onToggleDone }) => {
 
   const elements = todos.map((item) => {
     const { id, ...itemProps } = item;
@@ -16,12 +15,10 @@ const TodoList = ({ todos, onDeleted,
       <TodoListItem 
           {...itemProps } 
           onDeleted={() => onDeleted(id)}
-          onToggleImportant={() => onToggleImportant(id)}  // Когда нам елемент скажет что 
-          onToggleDone={() => onToggleDone(id)}		         //пользователь изменил его важность
-      />						                                       {/* Мы вызовем onToggleImportant с id ел. */}
-      </li>	        // Теперь 2 новых eventListener-а прошли от App к TodoList
-                    // И последенее что нам нужно сделать, это вызвать эти eventListener в
-                    // TodoListItem
+          onToggleImportant={() => onToggleImportant(id)}
+          onToggleDone={() => onToggleDone(id)}
+      />
+      </li>
     );
   });
 

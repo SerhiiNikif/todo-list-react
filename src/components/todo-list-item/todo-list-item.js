@@ -5,12 +5,9 @@ export default class TodoListItem extends Component {
 
     render () {	
       const { label, onDeleted, 
-              onToggleImportant,            // получим onToggleImportant, onToggleDone
+              onToggleImportant,
               onToggleDone,
               important, done } = this.props;
-
-/* И затем в компонентах, когда у нас возникают события, которые мы раньше обрабатывали локально и
-обновляли наш state, мы просто вызовем нашы eventListener-ы, которые нам передали сверху */
 
         let classNames = 'todo-list-item';
         if(done) {
@@ -39,8 +36,6 @@ export default class TodoListItem extends Component {
                   onClick={ onDeleted }>
                 <i className="fa fa-trash-o" />
               </button>
-{/* Теперь когда нажымаем на ел. списка в консоли выводить Toggle Done 1
-Когда нажимаем на восклицательный знак, то Toggle Important 2. Т.е. нашы события работают правильно */}     
             </span>
         );
     };
