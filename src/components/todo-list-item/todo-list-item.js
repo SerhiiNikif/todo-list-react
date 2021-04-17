@@ -1,46 +1,54 @@
 import React, { Component } from 'react';
 import './todo-list-item.css';
 
+/* Сделаю так, чтобы пользователь нажимал на восклицательный знак устанавливал 
+важность елемента */
+
 export default class TodoListItem extends Component { 
 
     state = {
-      done: false   // После того как я первый раз проинициализировал state,
-    };              // его болше нельзя изменять напрямую
+      done: false,
+      important: false		// добавим еще один ел.
+    };
+
+/* Когда мы добавили новые ел. к текущему state, мы не обновляли предыдущие вызовы setState
+setState принимает не полный state, а только те значения, которое нужно изменить */
 
     onLabelClick = () => {
-        this.setState({		/* сюда можно передать объект с изменениями, которые хотим 
-                            внести в state. Что мы хотим поменять? Когда польз. кликает
-                            на нашем label, мы сменим состояния */
+        this.setState({
           done: true
         });
     };
+
+    onMarkImportant = () => {
+        this.setState({
+          important: true
+        });
+      };
   
     render () {	
-        const { label, important = false } = this.props;
-        const { done } = this.state;			// деструктурируем
-                                                // state можно читать, но нельзя изменять напрямую
+        const { label } = this.props;               // вынесем important из props
+        const { done, important } = this.state;
 
-        let classNames = 'todo-list-item';	    // вынесем назв. класса в перепенную
+        let classNames = 'todo-list-item';
         if(done) {
-            classNames += ' done';		        // с условием конкатинируем классы
+            classNames += ' done';
+        }
+        if(important) {
+            classNames += ' important';
         }
 
-        const style = {
-            color: important ? 'steelblue' : 'black',
-            fontWeight: important ? 'bold' : 'normal'
-        };
-
         return (
-            <span className={ classNames }>		{/* сразу же используем */}
+            <span className={ classNames }>
             <span
                 className="todo-list-item-label"
-                style={style}
                 onClick={ this.onLabelClick }>
                 {label}
             </span>
 
             <button type="button"
-                    className="btn btn-outline-success btn-sm float-right">
+                    className="btn btn-outline-success btn-sm float-right"
+                    onClick={this.onMarkImportant}>
                 <i className="fa fa-exclamation" />
             </button>
 
