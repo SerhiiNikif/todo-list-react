@@ -1,35 +1,43 @@
 import React, { Component } from 'react';
 import './item-add-form.css';
 
+/* Улучшим нашу форму добаления новой записи и сделаем так, чтобы поле очищалось после того как 
+пользователь создаст новый ел. */
+
 export default class ItemAddForm extends Component {
 
   state = {
     label: ''
   };
 
-  onLableChange = (e) => {           // Для каждой буквы которую я ввожу выводиться ф. onLableChange
+  onLableChange = (e) => {
 
-    this.setState({	                // поскольку наш state не зависит от предыдущего state,
-			                              // мы можем просто передать туда объект
-      label: e.target.value         // наше текущее значения
+    this.setState({
+      label: e.target.value
     });
   }
 
-  // Обрабатывать результаты этой формы нужно в событии onSubmit
   onSubmit = (e) => {
-    e.preventDefault();     // когда этот event будет обрабатываться действия по ум.
-                            // выполнять не нужно
+    e.preventDefault();	
     this.props.onItemAdded(this.state.label);
+    this.setState({
+      label: ''
+    });
+    // Когда введем что-то в input, нажмем enter, добавить ел и поле input очиститься
   };
+
+/* Для того чтобы сделать ел. контролируемым, нам нужно сделать так, чтобы значение ел. 
+value={ this.state.label } устанавливалось из состояния компонента */  
 
   render() {
     return (
         <form className="item-add-form d-flex"
             onSubmit={this.onSubmit}>
-          <input type="text"				                  // добавим еще один input
+          <input type="text"
               className="form-control"
               onChange={ this.onLableChange }
               placeholder="What needs to be done" 
+              value={ this.state.label }
           />
 
           <button className="btn btn-outline-secondary">
