@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
 import './todo-list-item.css';
 
-/* Сделаю так, чтобы пользователь нажимал на восклицательный знак устанавливал 
-важность елемента */
+// Разрешим пользователю менять состояния с важной назад на неважную
 
 export default class TodoListItem extends Component { 
 
     state = {
       done: false,
-      important: false		// добавим еще один ел.
+      important: false
     };
 
-/* Когда мы добавили новые ел. к текущему state, мы не обновляли предыдущие вызовы setState
-setState принимает не полный state, а только те значения, которое нужно изменить */
-
-    onLabelClick = () => {
-        this.setState({
-          done: true
-        });
-    };
-
-    onMarkImportant = () => {
-        this.setState({
-          important: true
+    onLabelClick = () => {		        // сделаем тоже и для этого состояния
+        this.setState(( { done }) => {	// сразу деструктурируем
+          return {
+            done: !done
+          }
         });
       };
+
+    onMarkImportant = () => {
+        this.setState(({ important }) => {
+            return {
+              important: !important
+            };
+          });		
+        };
   
     render () {	
-        const { label } = this.props;               // вынесем important из props
+        const { label } = this.props;
         const { done, important } = this.state;
 
         let classNames = 'todo-list-item';
