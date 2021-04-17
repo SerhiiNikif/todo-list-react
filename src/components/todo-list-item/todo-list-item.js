@@ -3,20 +3,25 @@ import './todo-list-item.css';
 
 export default class TodoListItem extends Component {
 
-  render () {
-    const { label, important = false } = this.props;
-
-    const style = {
-      color: important ? 'steelblue' : 'black',
-      fontWeight: important ? 'bold' : 'normal'
+    onLabelClick = () => {				// создаю ф. не на прототипе класса, а на самом обьекте
+      console.log(`Done: ${this.props.label}`);
     };
-
-    return (
-      <span className="todo-list-item">
-        <span
-          className="todo-list-item-label"
-          style={style}>
-          {label}
+  
+    render () {	
+      const { label, important = false } = this.props;
+  
+      const style = {
+        color: important ? 'steelblue' : 'black',
+        fontWeight: important ? 'bold' : 'normal'
+      };
+  
+      return (
+        <span className="todo-list-item">
+          <span
+            className="todo-list-item-label"
+            style={style}
+            onClick={ this.onLabelClick }>
+            {label}
         </span>
 
         <button type="button"
