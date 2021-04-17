@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import './todo-list-item.css';
 
-// Переделаем компонент TodoListItem в класс
-export default class TodoListItem extends Component {	// наследуем класс React.Component
-  // Теперь было бы неполохо в этот класс поместить ф-цию, которая будет отображать наш компонент
-  // как TodoListItemFunc. И в классе такая ф-ция будет называться render
+export default class TodoListItem extends Component {
 
-  render () {		/* Эта ф-ция не принимает на вход значения props, вместо этого все свойства
-			        можно получить через обьект this.props - это то место из которого можем
-			        получить текущее свойство
-
-Возмем названия свойств, которые до этого были обьявлены в обьявлении ф-ции и деструктурируем их
-в начале нашей ф-ции и получим их из this.props */
-
+  render () {
     const { label, important = false } = this.props;
 
     const style = {
