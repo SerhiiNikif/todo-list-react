@@ -17,8 +17,10 @@ export default class App extends Component {
             this.createTodoItem('Make Awesome App'),
             this.createTodoItem('Have a lunch')
         ],
-        term: ''
-    };
+        term: '',
+        filter: 'all'	    // одно из трех значений: active, all, done
+                            // чтобы проверить что работает, установим по ум. в active
+      };
 
     createTodoItem(label) {
         return {
@@ -93,37 +95,59 @@ export default class App extends Component {
         this.setState({term});
     };
 
-    /* Напишем ф., которая будет фильтровать наши елементы
-    В нашей ф. render мы больше не можем выводить все ел. массива todoData. Нам нужно создать отдельный
-    массив, в котором будут видимые на текущий момент елементы */
-
-    search(items, term) {	        // будет принимать массив ел. и тот текст который мы пытаемся найти
-
-        if (term.length === 0) {	// если пустая строка, то вернем все item-ы
+    search(items, term) {
+        if (term.length === 0) {
         return items;
         }    
     
         return items.filter((item) => {
           return item.label
                 .toLowerCase()
-                .indexOf(term.toLowerCase()) > -1;  // Вернуть если indexOf > -1, если есть совпадения, то будет > -1
+                .indexOf(term.toLowerCase()) > -1;
         });
     }
+
+    filter(items, filter) {
+        switch(filter) {
+          case 'all':
+            return items;
+          case 'active':
+            return items.filter((item) => !item.done);	// возвращает если item != done
+          case 'done':
+            return items.filter((item) => item.done);
+          default:
+            return items;
+        };
+    }
+
+    onSearchChange = (term) => {
+        this.setState({term});
+    };
+  
+    onFilterChange = (filter) => {
+        this.setState({filter});
+    };
     
     render() {
-        const { todoData, term } = this.state;
+        const { todoData, term, filter } = this.state;
     
-        const visibleItems = this.search(todoData, term);
+        const visibleItems = this.filter(
+            this.search(todoData, term), filter);	// отфильтруем по значению this.state.filter
+        
         const doneCount = todoData
 	        .filter((el) => el.done).length;
+
         const todoCount = todoData.length - doneCount;
+        
         return (
             <div className="todo-app">
               <AppHeader toDo={todoCount} done={doneCount} />
                 <div className="top-panel d-flex">
                     <SearchPanel 
                         onSearchChange={this.onSearchChange}/>
-                    <ItemStatusFilter />
+                    <ItemStatusFilter 
+                        filter={filter} 
+                        onFilterChange={this.onFilterChange}/>
                 </div>
 
                 <TodoList 
