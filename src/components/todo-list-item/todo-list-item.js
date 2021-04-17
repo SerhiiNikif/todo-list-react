@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import './todo-list-item.css';
 
-// Разрешим пользователю менять состояния с важной назад на неважную
+// Сделаем так, чтобы могли удалаять елементы со списка
+
+/* Для того, чтобы удалить ел. внизу иерархии на нужно сделать так, чтобы данные вверху иерархии
+на уровне App обновились
+
+Нам нужно сделать так, чтобы компонент App узнавал, что кнопка на компоненте TodoListItem была
+нажата
+
+Сделаем так, что TodoListItem будет генирить события, которые будет слушать TodoList. TodoList
+передаст это событие еще выше в ел. App и ел. App обновит массив, и затем как массив обновиться
+TodoListItem исчезнет */
 
 export default class TodoListItem extends Component { 
 
@@ -10,8 +20,8 @@ export default class TodoListItem extends Component {
       important: false
     };
 
-    onLabelClick = () => {		        // сделаем тоже и для этого состояния
-        this.setState(( { done }) => {	// сразу деструктурируем
+    onLabelClick = () => {
+        this.setState(( { done }) => {
           return {
             done: !done
           }
@@ -27,7 +37,7 @@ export default class TodoListItem extends Component {
         };
   
     render () {	
-        const { label } = this.props;
+        const { label, onDeleted } = this.props;
         const { done, important } = this.state;
 
         let classNames = 'todo-list-item';
@@ -53,9 +63,11 @@ export default class TodoListItem extends Component {
             </button>
 
             <button type="button"
-                    className="btn btn-outline-danger btn-sm float-right">
-                <i className="fa fa-trash-o" />
-            </button>
+                className="btn btn-outline-danger btn-sm float-right"
+	            onClick={ onDeleted }>		{/* вызовем ф. которую нам передали в props из ел. выше 
+                                            Теперь при нажатии на корзину выводиться в консоль Deleted */}
+          <i className="fa fa-trash-o" />
+        </button>
             </span>
         );
     };
