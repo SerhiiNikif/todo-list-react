@@ -1,7 +1,6 @@
 import React from 'react';
 
-const TodoListItem = ( { label, important = false } ) => {  // деструктурируем
-                                                            // по ум. если не передаем important, то будет false
+const TodoListItem = ( { label, important = false } ) => {
   const style = {
     color: important ? 'tomato' : 'black'
   }
