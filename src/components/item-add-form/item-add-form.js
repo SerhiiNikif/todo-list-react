@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import './item-add-form.css';
 
-/* Улучшим нашу форму добаления новой записи и сделаем так, чтобы поле очищалось после того как 
-пользователь создаст новый ел. */
-
 export default class ItemAddForm extends Component {
 
   state = {
@@ -23,11 +20,7 @@ export default class ItemAddForm extends Component {
     this.setState({
       label: ''
     });
-    // Когда введем что-то в input, нажмем enter, добавить ел и поле input очиститься
   };
-
-/* Для того чтобы сделать ел. контролируемым, нам нужно сделать так, чтобы значение ел. 
-value={ this.state.label } устанавливалось из состояния компонента */  
 
   render() {
     return (

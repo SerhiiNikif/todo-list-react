@@ -16,8 +16,9 @@ export default class App extends Component {
             this.createTodoItem('Drink Coffee'),
             this.createTodoItem('Make Awesome App'),
             this.createTodoItem('Have a lunch')
-        ]
-      };
+        ],
+        term: ''
+    };
 
     createTodoItem(label) {
         return {
@@ -88,21 +89,45 @@ export default class App extends Component {
         });
     };
 
+    onSearchChange = (term) => {
+        this.setState({term});
+    };
+
+    /* Напишем ф., которая будет фильтровать наши елементы
+    В нашей ф. render мы больше не можем выводить все ел. массива todoData. Нам нужно создать отдельный
+    массив, в котором будут видимые на текущий момент елементы */
+
+    search(items, term) {	        // будет принимать массив ел. и тот текст который мы пытаемся найти
+
+        if (term.length === 0) {	// если пустая строка, то вернем все item-ы
+        return items;
+        }    
+    
+        return items.filter((item) => {
+          return item.label
+                .toLowerCase()
+                .indexOf(term.toLowerCase()) > -1;  // Вернуть если indexOf > -1, если есть совпадения, то будет > -1
+        });
+    }
+    
     render() {
-        const { todoData } = this.state;
+        const { todoData, term } = this.state;
+    
+        const visibleItems = this.search(todoData, term);
         const doneCount = todoData
 	        .filter((el) => el.done).length;
         const todoCount = todoData.length - doneCount;
         return (
             <div className="todo-app">
-                <AppHeader toDo={ todoCount } done={ doneCount } />
+              <AppHeader toDo={todoCount} done={doneCount} />
                 <div className="top-panel d-flex">
-                    <SearchPanel />
+                    <SearchPanel 
+                        onSearchChange={this.onSearchChange}/>
                     <ItemStatusFilter />
                 </div>
 
                 <TodoList 
-                    todos={ todoData }
+                    todos={ visibleItems }
                     onDeleted={ this.deleteItem }
                     onToggleImportant={ this.onToggleImportant }
                     onToggleDone={ this.onToggleDone }
